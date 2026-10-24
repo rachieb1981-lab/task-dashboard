@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { TagIcon, PencilIcon, TrashIcon, CheckIcon, XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { useTagContext } from '../../../context/TagContext';
 import { useTaskContext } from '../../../context/TaskContext';
@@ -103,7 +103,6 @@ function TagManager({ onClose }) {
                   value={editedTagName}
                   onChange={(e) => setEditedTagName(e.target.value)}
                   className="w-full py-1 px-2 text-sm border border-primary-300 rounded-xs focus:outline-hidden focus:ring-1 focus:ring-primary-500"
-                  autoFocus
                   data-testid="edit-tag-input"
                 />
               ) : (

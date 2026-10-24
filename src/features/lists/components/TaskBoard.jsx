@@ -6,12 +6,10 @@ import TaskListConfig from './TaskListConfig';
 import TagManager from '../../tags/components/TagManager';
 import ListAddTask from './ListAddTask';
 import { useTaskContext } from '../../../context/TaskContext';
-import { useTagContext } from '../../../context/TagContext';
 import { useListContext } from '../../../context/ListContext';
 
 function TaskBoard() {
   const { tasks, completeAllTasks, deleteCompletedTasks } = useTaskContext();
-  const { tags } = useTagContext();
   const { taskLists, addTaskList, updateTaskList, deleteTaskList, getFilteredTasks } = useListContext();
   
   const [editingListId, setEditingListId] = useState(null);
