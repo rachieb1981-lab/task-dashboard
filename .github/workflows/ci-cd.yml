@@ -37,9 +37,8 @@ jobs:
     - name: Run tests
       run: npm test
 
-    # TODO: Add linting steps
-    # - name: Run ESLint
-    #   run: npm run lint
-    #
-    # - name: Run accessibility checks
-    #   run: npm run lint:a11y
+    - name: Run ESLint
+      run: npm run lint
+
+    - name: Run accessibility checks
+      run: npm run lint:a11y

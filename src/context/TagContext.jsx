@@ -31,10 +31,14 @@ export const TagProvider = ({ children }) => {
     
     // Add these to our existing tags (without duplicates)
     const updatedTags = Array.from(uniqueTags);
-    setTags(prevTags => {
-      const allTags = new Set([...prevTags, ...updatedTags]);
-      return Array.from(allTags);
-    });
+    if (updatedTags.length > 0) {
+      setTags(prevTags => {
+        const hasNewTag = updatedTags.some(t => !prevTags.includes(t));
+        if (!hasNewTag) return prevTags;
+        const allTags = new Set([...prevTags, ...updatedTags]);
+        return Array.from(allTags);
+      });
+    }
   }, [tasks]);
 
   const addTag = (tag) => {

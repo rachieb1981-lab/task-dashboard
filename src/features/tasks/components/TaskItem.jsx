@@ -16,19 +16,20 @@ function TaskItem({ task }) {
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="checkbox-container" onClick={() => toggleTask(task.id)}>
+          <div className="checkbox-container">
             <input 
               type="checkbox" 
               checked={task.isCompleted} 
-              readOnly 
+              onChange={() => toggleTask(task.id)}
               className="cursor-pointer"
               data-testid={`task-checkbox-${task.id}`}
             />
             <CheckIcon className="checkmark h-3 w-3 text-white cursor-pointer" />
           </div>
           
-          <p 
-            className={`text-left text-base cursor-pointer ${
+          <button
+            type="button"
+            className={`text-left text-base cursor-pointer border-none bg-transparent p-0 ${
               task.isCompleted 
                 ? 'line-through text-neutral-500' 
                 : 'text-neutral-800'
@@ -37,7 +38,7 @@ function TaskItem({ task }) {
             data-testid={`task-text-${task.id}`}
           >
             {task.title || task.text}
-          </p>
+          </button>
         </div>
         
         <motion.button

@@ -54,7 +54,7 @@ function TaskListConfig({ taskList, onSave, onCancel }) {
       
       {/* Current filters */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-neutral-700 mb-1">Current Filters</label>
+        <span className="block text-sm font-medium text-neutral-700 mb-1">Current Filters</span>
         
         {filters.length === 0 ? (
           <p className="text-sm text-neutral-500" data-testid="no-filters-message">No filters applied. This list will show all tasks.</p>
@@ -84,7 +84,7 @@ function TaskListConfig({ taskList, onSave, onCancel }) {
       
       {/* Add tag filter */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-neutral-700 mb-1">Filter by Tag</label>
+        <span className="block text-sm font-medium text-neutral-700 mb-1">Filter by Tag</span>
         {tags.length === 0 ? (
           <p className="text-sm text-neutral-500" data-testid="no-tags-available-message">No tags available. Add tags to tasks first.</p>
         ) : (
@@ -112,7 +112,7 @@ function TaskListConfig({ taskList, onSave, onCancel }) {
       
       {/* Add completion filter */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-neutral-700 mb-1">Filter by Status</label>
+        <span className="block text-sm font-medium text-neutral-700 mb-1">Filter by Status</span>
         <div className="flex gap-2">
           <button
             type="button"
