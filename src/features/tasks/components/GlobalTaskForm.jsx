@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckIcon, XMarkIcon, TagIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { useTaskContext } from '../../../context/TaskContext';
 import { useTagContext } from '../../../context/TagContext';
+import { useAutoFocus } from '../../../common/hooks/useAutoFocus';
 
 function GlobalTaskForm({ onCancel }) {
   const { addTask } = useTaskContext();
@@ -11,14 +12,7 @@ function GlobalTaskForm({ onCancel }) {
   const [title, setTitle] = useState('');
   const [selectedTags, setSelectedTags] = useState([]);
   const [newTagInput, setNewTagInput] = useState('');
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    // Auto-focus input when component mounts
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
+  const inputRef = useAutoFocus();
 
   const handleSubmit = (e) => {
     e.preventDefault();
