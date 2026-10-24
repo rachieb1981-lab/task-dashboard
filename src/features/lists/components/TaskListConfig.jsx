@@ -7,9 +7,13 @@ function TaskListConfig({ taskList, onSave, onCancel }) {
   const [title, setTitle] = useState(taskList.title);
   const [filters, setFilters] = useState(taskList.filters || []);
 
+  const activeTagFilters = new Set(
+    filters.filter(f => f.type === 'tag').map(f => f.value)
+  );
+
   const handleAddTagFilter = (tag) => {
     // Check if the tag is already in filters
-    if (filters.some(f => f.type === 'tag' && f.value === tag)) return;
+    if (activeTagFilters.has(tag)) return;
     
     // Add the tag filter
     setFilters([...filters, { type: 'tag', value: tag }]);
@@ -89,23 +93,26 @@ function TaskListConfig({ taskList, onSave, onCancel }) {
           <p className="text-sm text-neutral-500" data-testid="no-tags-available-message">No tags available. Add tags to tasks first.</p>
         ) : (
           <div className="flex flex-wrap gap-2" data-testid="available-tags">
-            {tags.map((tag) => (
-              <button
-                key={tag}
-                type="button"
-                onClick={() => handleAddTagFilter(tag)}
-                disabled={filters.some(f => f.type === 'tag' && f.value === tag)}
-                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-                  ${filters.some(f => f.type === 'tag' && f.value === tag)
-                    ? 'bg-primary-200 text-primary-700 opacity-50 cursor-not-allowed'
-                    : 'bg-primary-100 text-primary-700 hover:bg-primary-200'
-                  }`}
-                data-testid={`tag-filter-${tag}`}
-              >
-                <TagIcon className="h-3 w-3 mr-1" />
-                {tag}
-              </button>
-            ))}
+            {tags.map((tag) => {
+              const isTagFiltered = activeTagFilters.has(tag);
+              return (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => handleAddTagFilter(tag)}
+                  disabled={isTagFiltered}
+                  className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+                    ${isTagFiltered
+                      ? 'bg-primary-200 text-primary-700 opacity-50 cursor-not-allowed'
+                      : 'bg-primary-100 text-primary-700 hover:bg-primary-200'
+                    }`}
+                  data-testid={`tag-filter-${tag}`}
+                >
+                  <TagIcon className="h-3 w-3 mr-1" />
+                  {tag}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
