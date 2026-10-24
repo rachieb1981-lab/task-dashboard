@@ -42,21 +42,76 @@ export const ListProvider = ({ children }) => {
 
   // Filter tasks according to the task list's filter configuration
   const getFilteredTasks = (filterConfig, tasks) => {
-    if (!filterConfig || filterConfig.length === 0) {
-      return tasks;
+    if (!filterConfig || filterConfig.length === 0 || !tasks || tasks.length === 0) {
+      return tasks || [];
     }
     
+    // Pre-process filters once before iterating over tasks
+    const completedFilters = [];
+    const tagFilters = [];
+    const otherFilters = [];
+
+    for (let i = 0; i < filterConfig.length; i++) {
+      const filter = filterConfig[i];
+      if (!filter) continue;
+
+      if (filter.type === 'completed') {
+        completedFilters.push(filter.value);
+      } else if (filter.type === 'tag') {
+        tagFilters.push(filter.value);
+      } else {
+        otherFilters.push(filter);
+      }
+    }
+
+    const numCompletedFilters = completedFilters.length;
+    const numTagFilters = tagFilters.length;
+    const numOtherFilters = otherFilters.length;
+
     return tasks.filter(task => {
-      // ALL filters must match (AND logic)
-      return filterConfig.every(filter => {
-        if (filter.type === 'tag') {
-          return task.tags && task.tags.includes(filter.value);
+      if (!task) return false;
+
+      // 1. Fast boolean evaluations first: completed status
+      if (numCompletedFilters > 0) {
+        for (let i = 0; i < numCompletedFilters; i++) {
+          if (task.isCompleted !== completedFilters[i]) {
+            return false;
+          }
         }
-        if (filter.type === 'completed') {
-          return task.isCompleted === filter.value;
+      }
+
+      // 2. Tag filters evaluation
+      if (numTagFilters > 0) {
+        const tags = task.tags;
+        if (!tags) return false;
+
+        const isSet = typeof tags.has === 'function';
+        const isArray = typeof tags.includes === 'function';
+
+        if (isSet) {
+          for (let i = 0; i < numTagFilters; i++) {
+            if (!tags.has(tagFilters[i])) return false;
+          }
+        } else if (isArray) {
+          for (let i = 0; i < numTagFilters; i++) {
+            if (!tags.includes(tagFilters[i])) return false;
+          }
+        } else {
+          return false;
         }
-        return true;
-      });
+      }
+
+      // 3. Fallback for any non-standard filter types
+      if (numOtherFilters > 0) {
+        for (let i = 0; i < numOtherFilters; i++) {
+          const filter = otherFilters[i];
+          if (filter.predicate && typeof filter.predicate === 'function') {
+            if (!filter.predicate(task)) return false;
+          }
+        }
+      }
+
+      return true;
     });
   };
 
