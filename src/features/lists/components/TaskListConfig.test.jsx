@@ -81,6 +81,28 @@ describe('TaskListConfig Component', () => {
     expect(screen.getByText('Tag: personal')).toBeInTheDocument();
   });
 
+  test('does not add duplicate tag filter if tag is already selected', () => {
+    render(
+      <TaskListConfig
+        taskList={mockTaskList}
+        onSave={mockOnSave}
+        onCancel={mockOnCancel}
+      />
+    );
+
+    // Attempt to click on a tag filter button for a tag already present in mockTaskList.filters ('work')
+    const workTagButton = screen.getByTestId('tag-filter-work');
+    fireEvent.click(workTagButton);
+
+    // Check that 'Tag: work' appears only once
+    const workFilterItems = screen.getAllByText('Tag: work');
+    expect(workFilterItems).toHaveLength(1);
+
+    // Check total filters displayed
+    const filterList = screen.getByTestId('filter-list');
+    expect(filterList.children).toHaveLength(1);
+  });
+
   test('adds a completion filter for active tasks', () => {
     render(
       <TaskListConfig 
