@@ -113,7 +113,7 @@ function TaskBoard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4" data-testid="task-lists-container">
         {taskLists.map(list => {
           const filteredTasks = getFilteredTasks(list.filters, tasks);
-          const completedTasksCount = filteredTasks.filter(task => task.isCompleted).length;
+          const completedTasksCount = filteredTasks.reduce((acc, task) => (task.isCompleted ? acc + 1 : acc), 0);
           const hasCompletedTasks = completedTasksCount > 0;
           const allTasksCompleted = filteredTasks.length > 0 && filteredTasks.every(task => task.isCompleted);
           
