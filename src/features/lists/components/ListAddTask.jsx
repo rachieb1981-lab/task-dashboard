@@ -1,12 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useTaskContext } from '../../../context/TaskContext';
+import { useAutoFocus } from '../../../common/hooks/useAutoFocus';
 
 function ListAddTask({ onCancel, listFilters }) {
   const { addTask } = useTaskContext();
   const [text, setText] = useState('');
-  const inputRef = useRef(null);
+  const inputRef = useAutoFocus();
 
   // Extract tag filters from the list's filters
   const getTagFilters = () => {
@@ -14,13 +15,6 @@ function ListAddTask({ onCancel, listFilters }) {
       .filter(filter => filter.type === 'tag')
       .map(filter => filter.value);
   };
-
-  useEffect(() => {
-    // Auto-focus input when component mounts
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
