@@ -27,6 +27,8 @@
     "preview": "vite preview",
     "preview:hydrated": "VITE_ENABLE_DATA_HYDRATION=true vite preview",
     "test": "vitest run",
+    "lint": "npx --yes eslint . --ext .js,.jsx",
+    "lint:fix": "npx --yes eslint . --ext .js,.jsx --fix",
     "build:css": "tailwindcss build src/index.css -o src/output.css",
     "watch:css": "tailwindcss -i src/index.css -o src/output.css --watch"
   },
