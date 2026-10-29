@@ -28,7 +28,7 @@ export const TaskProvider = ({ children }) => {
   }, [tasks]);
 
   const addTask = (task) => {
-    const id = Math.floor(Math.random() * 10000) + 1;
+    const id = crypto.randomUUID();
     const newTask = { id, ...task };
     setTasks([...tasks, newTask]);
     return newTask;
